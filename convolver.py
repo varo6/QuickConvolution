@@ -18,13 +18,15 @@ unsafe_allow_html=True)
 
 st.write("See more details in the [help](#help) section.")
 
-# declare session state parameters
+# declare session state parameters,  two objects "signal_1" and "signal_2", and toggle views will be booleans
 if "signal_1" not in st.session_state:
     st.session_state["signal_1"] = None
 if "signal_2" not in st.session_state:
     st.session_state["signal_2"] = None
 if "show_signals" not in st.session_state:
     st.session_state["show_signals"] = [False, False, False]
+
+# ADD SIGNALS SECTION ---------------------------------------------------------------------------------------------------
 
 col1, col2 = st.columns([6, 6], gap="large")
 
@@ -44,7 +46,6 @@ with col1:
         st.write("Current toggle view: " + str(st.session_state["show_signals"][0]))
     
 
-
 with col2:
     st.subheader("Second signal: ")
     subcol1, subcol2, a = st.columns([6, 8, 1], gap="small")
@@ -59,16 +60,18 @@ with col2:
     else:
         st.write("Current toggle view: " + str(st.session_state["show_signals"][1]))
 
-# -----------------------------------------------------------------------
+# CONVOLUTIONS SECTION-----------------------------------------------------------
 st.divider()
 c1, c2, c3 = st.columns([11,5,9])
 
 if c2.button("Convolve!"):
-    st.session_state["show_signals"][2] = True
+    st.session_state["show_signals"][2] = not st.session_state["show_signals"][2]
 
 if st.session_state["show_signals"][2] == True:
     if st.session_state["signal_1"] is not None and st.session_state["signal_2"] is not None:
         st.pyplot(st.session_state["signal_1"].show_convolution(st.session_state["signal_2"]))
+elif st.session_state["show_signals"][2] == False:
+    st.write("Current toggle view: " + str(st.session_state["show_signals"][2]))
 
 # ---------------------------------------------------------------------------------
 st.divider()

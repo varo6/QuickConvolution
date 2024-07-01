@@ -27,15 +27,14 @@ class SignalImpulse:
         return myfig
     
     def show_convolution(self, in2: 'SignalImpulse'):
-        # Realizar la convolución en modo "full"
+        
         convolved = np.convolve(self.values, in2.values, mode="full")
-        amp = max(np.max(self.values), np.max(in2.values))
-        convolved = amp*convolved / np.max(np.abs(convolved))
+        # Normalize convolution 
+        amp_max = np.max(self.values) * np.max(in2.values)
+        convolved = amp_max*convolved / np.max(np.abs(convolved))
  
-        # Crear un nuevo vector de tiempo para la convolución
+        # New time vector will be amplified
         t_conv = np.linspace(-2*self.max_T, 2*self.max_T, len(convolved), endpoint=False)
-    
-        # Normalizar la convolución
             
         myfig = plt.figure(figsize=(10, 4))
         plt.plot(t_conv, convolved)
@@ -56,11 +55,9 @@ class unitImpulse(SignalImpulse):
         self.values = np.ones_like(self.t)
         self.values = np.where(np.isclose(self.t, t0, atol=0.006), A, 0)
    
-
     def to_string(self) -> str:
         return "Delta Pulse"
         
-
 
 class SquareImpulse(SignalImpulse):
 
